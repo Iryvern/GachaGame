@@ -45,34 +45,43 @@ def update_slider_value(event, slider_rect, x, width):
     new_value = max(0, min(relative_x / width, 1))  # Clamp between 0 and 1
     return new_value
 
-def show_settings_menu(screen, font):
+def show_settings_menu(screen, font, current_screen_content):
+    overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 250))  # Semi-transparent black
+    screen.blit(overlay, (0, 0))
     running_settings = True
     settings = load_settings()
     music_volume = settings["music_volume"] / 100  # Convert to 0-1 range
     sounds_volume = settings["sounds_volume"] / 100
     notifications_on = settings["notifications_on"]
     dragging = None  # Keeps track of which slider is being dragged
+    text_color = (255, 255, 255)
 
     while running_settings:
-        screen.fill(white)  # Or any background
+
+        screen.blit(current_screen_content, (0, 0))
+        # Redraw the semi-transparent overlay
+        screen.blit(overlay, (0, 0))
 
         # Text labels 
-        music_label_text = font.render("Music", True, black)
-        sounds_label_text = font.render("Sounds", True, black)
-        notification_label_text = font.render("Notifications", True, black)
+        settings_label_text = font.render("Settings", True, text_color)
+        music_label_text = font.render("Music", True, text_color)
+        sounds_label_text = font.render("Sounds", True, text_color)
+        notification_label_text = font.render("Notifications", True, text_color)
 
         # Draw text labels to the left of sliders
         screen.blit(music_label_text, (50, 100 + music_label_text.get_height() // 2))
         screen.blit(sounds_label_text, (50, 150 + sounds_label_text.get_height() // 2))
         screen.blit(notification_label_text, (50, 200 + sounds_label_text.get_height() // 2))
+        screen.blit(settings_label_text, (200, 50 + settings_label_text.get_height() // 2))
 
         # Draw sliders for music and sounds
         music_track_rect, music_knob_rect = draw_slider(screen, 160, 112, 200, 30, music_volume)
         sounds_track_rect, sounds_knob_rect = draw_slider(screen, 160, 162, 200, 30, sounds_volume)
 
         # Slider value texts
-        music_value_text = font.render(f"{int(music_volume * 100)}", True, black)
-        sounds_value_text = font.render(f"{int(sounds_volume * 100)}", True, black)
+        music_value_text = font.render(f"{int(music_volume * 100)}", True, text_color)
+        sounds_value_text = font.render(f"{int(sounds_volume * 100)}", True, text_color)
 
         # Draw value texts to the right of sliders
         screen.blit(music_value_text, (365, 100 + music_value_text.get_height() // 2))

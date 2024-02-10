@@ -4,6 +4,7 @@ from settings import *
 from game_functions import draw_button, handle_events
 from popup import show_popup_confirm
 from settings_menu import show_settings_menu
+from lobby import show_lobby
 
 def main():
     pygame.init()
@@ -31,7 +32,7 @@ def main():
         action = handle_events(screen, buttons)
 
         if action == 'start':
-            print("Start clicked")
+            show_lobby(screen, font)
 
         if action == 'quit':
             confirm_action = show_popup_confirm(screen, font)
@@ -42,7 +43,8 @@ def main():
                 continue
 
         if action == 'options':
-            show_settings_menu(screen, pygame.font.SysFont(font_name, font_size))
+            current_screen_content = screen.copy()
+            show_settings_menu(screen, font, current_screen_content)
 
         pygame.display.flip()
 

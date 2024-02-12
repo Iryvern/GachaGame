@@ -2,7 +2,7 @@ import pygame
 import sys
 from settings import *
 from game_functions import draw_button, handle_events
-from popup import show_popup_confirm
+from old_popup import show_popup_confirm
 from settings_menu import show_settings_menu
 from lobby import show_lobby
 
